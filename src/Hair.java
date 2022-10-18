@@ -7,22 +7,22 @@ public class Hair extends Service {
     }
 
     public void displayMenu() {
-        System.out.println("1.Blow dry\n" +
-                "2.HairStyle\n" +
-                "3.Retro\n" +
-                "4.Haircut\n" +
-                "5.Hair Dye\n" +
-                "6.Treatment");
+        System.out.println("""
+                1.Blow dry
+                "2.HairStyle
+                "3.Retro
+                "4.Haircut
+                "5.Hair Dye
+                "6.Treatment""");
     }
 
     public double costForEachType(String hairLength) {
-        if (hairLength.equals("Long")) {
-            return getCost() + 100.0;
-        } else if (hairLength.equals(("Medium"))) {
-            return getCost() + 50.0;
-        } else if (hairLength.equals("Short")) {
-            return getCost() + 20;
-        } else return 0;
+        return switch (hairLength) {
+            case "Long" -> getCost() + 100.0;
+            case "Medium" -> getCost() + 50.0;
+            case "Short" -> getCost() + 20;
+            default -> 0;
+        };
     }
 
     public double totalBill() {
