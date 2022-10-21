@@ -26,9 +26,7 @@ public class Main {
                 String phoneNumber;
                 Employee emp = new Employee();
                 switch (employeeChoice) {
-                    case 1 -> {
-                        Employee.displayAppointment();
-                    }
+                    case 1 -> Employee.displayAppointment();
                     case 2 -> {
                         while (employeesArray.size() < 15) {
                             System.out.println("Please enter your Name :");
@@ -118,7 +116,6 @@ public class Main {
 //                            System.exit(0);
                             break;
                         }
-
                     }
                 } else {
                     System.exit(0);
