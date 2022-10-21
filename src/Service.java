@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Service {
     private static ArrayList<Employee> stylistArrayList = new ArrayList<>();
     private String name;
-    private double cost;
+    private  double cost;
     private String stylistName;
 
     public Service(String name, double cost, String stylistName) {
@@ -12,20 +12,21 @@ public class Service {
         this.stylistName = stylistName;
     }
 
+    public Service() {}
 
-    public Service() {
-
-    }
-
-    public static void availableStylists() {
+    public static void init() {
         stylistArrayList.add(new Employee("Sali", "Sali@gmail.com", "0555807637", "Dammam"));
         stylistArrayList.add(new Employee("Sara", "Sara@gmail.com", "0553544047", "Dammam"));
         stylistArrayList.add(new Employee("Abeer", "Aboora122a@gmail.com", "0503544435", "Dammam"));
         stylistArrayList.add(new Employee("Marry", "Momo2a@gmail.com", "0523566482", "Dammam"));
         stylistArrayList.add(new Employee("Jinnie", "jojooj@gmail.com", "0553462141", "Dammam"));
+    }
 
+    public static void availableStylists() {
+        int i = 0;
         for (Employee employee : stylistArrayList) {
-            System.out.println(employee.getName());
+            System.out.println((i + 1) + " -> " + employee.getName());
+            i ++;
         }
     }
 
@@ -33,20 +34,24 @@ public class Service {
         return stylistArrayList.get(choice - 1).getName();
     }
 
+    public static Employee getStylist(int stylistIndex) {
+        return stylistArrayList.get(stylistIndex);
+    }
+
     @Override
     public String toString() {
-        return "Services:\n " + name + '\n' + " Price: " + cost + "\n" + " stylistName='" + getStylistName();
+        return "Services: " + name + '\n' + " Price: " + cost + "\n" + " stylistName='" + getStylistName();
     }
 
     public String getStylistName() {
         return stylistName;
     }
 
-    public void setStylistName(String stylistName) {
+    public  void setStylistName(String stylistName) {
         this.stylistName = stylistName;
     }
 
-    public ArrayList<Employee> getStylist() {
+    public static ArrayList<Employee> getStylistArrayList() {
         return stylistArrayList;
     }
 
@@ -62,19 +67,20 @@ public class Service {
         this.name = name;
     }
 
-    public double getCost() {
-        return cost;
+    public  double getCost() {
+        return cost ;
     }
 
     public void setCost(double cost) {
         this.cost = cost;
     }
 
-    public void addStylist(Employee employee) {
+    public static void  addStylist(Employee employee) {
         stylistArrayList.add(employee);
     }
 
     public void removeStylist(Employee employee) {
+        stylistArrayList.remove(employee);
     }
 
 

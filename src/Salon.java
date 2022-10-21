@@ -1,12 +1,12 @@
 public class Salon {
-    private String name ;
+    private String name;
+    private String email;
+    private String phone;
+    private String address;
 
+    public Salon() {
+    }
 
-    private String email ;
-    private String phone ;
-    private String address ;
-
-    public Salon(){} ;
     public Salon(String name, String email, String phone, String address) {
         this.name = name;
         this.email = email;

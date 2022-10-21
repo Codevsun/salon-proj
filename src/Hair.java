@@ -9,11 +9,11 @@ public class Hair extends Service {
     public void displayMenu() {
         System.out.println("""
                 1.Blow dry
-                "2.HairStyle
-                "3.Retro
-                "4.Haircut
-                "5.Hair Dye
-                "6.Treatment""");
+                2.HairStyle
+                3.Retro
+                4.Haircut
+                5.Hair Dye
+                6.Treatment""");
     }
 
     public double costForEachType(String hairLength) {
@@ -25,8 +25,8 @@ public class Hair extends Service {
         };
     }
 
-    public double totalBill() {
-        return 0;
+    public void totalBill() {
+        System.out.println(this.getCost());
     }
 
     public ArrayList<Service> getServices() {

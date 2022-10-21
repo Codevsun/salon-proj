@@ -1,43 +1,45 @@
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Appointment extends Customer {
-    private static ArrayList<Service> serviceArrayList = new ArrayList<>();
-
-
+    private final String id = UUID.randomUUID().toString();
+    private ArrayList<Service> serviceArrayList = new ArrayList<>();
+    private Customer customer;
     public Appointment() {
     }
 
-    public Appointment(String name, String email, String phone, String address, String customerId, ArrayList<Service> serviceArrayList) {
-        super(name, email, phone, address, customerId);
-        Appointment.serviceArrayList = serviceArrayList;
-
+    public Appointment(ArrayList<Service> serviceArrayList, Customer customer) {
+        this.serviceArrayList = serviceArrayList;
+        this.customer = customer;
     }
 
-    public static ArrayList<Service> getServicesArrayList() {
+    public String getId() {
+        return id;
+    }
+
+    public ArrayList<Service> getServicesArrayList() {
         return serviceArrayList;
     }
 
     @Override
     public String toString() {
-//        return "Appointment{" +
-//                "servicesArrayList=" + servicesArrayList +
-//                '}';
         return "Name: " + this.getName() +
                 "\nEmail: " + this.getEmail() +
                 "\nPhoneNumber: " + this.getPhone() +
                 "\nAddress: " + this.getAddress() +
                 "\nCustomer ID: " + getCustomerId() +
-                "\nAppointment: \n" + serviceArrayList.toString();
+                "\nAppointment: \n" + getServicesArrayList();
     }
 
-//    public String toSString(Appointment appointment) {
-//        return "Name\n:" + appointment.getName()
-//                + "Email:\n" + appointment.getEmail() +
-//                "PhoneNumber\n" + appointment.getPhone() + "" +
-//                "Address\n" + appointment.getAddress() +
-//                "Customer ID\n" + getCustomerId();
-//
-//    }
+    public Customer getCustomer() {
+        return customer;
+    }
 
+    public void setCustomer(Customer newCustomer) {
+        this.customer = newCustomer;
+    }
 
+    public void setServiceArrayList(ArrayList<Service> serviceArrayList) {
+        this.serviceArrayList = serviceArrayList;
+    }
 }

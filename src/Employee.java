@@ -1,10 +1,12 @@
+import java.util.ArrayList;
+
 public class Employee extends Salon {
     public int employeeId;
     private static int employeeIdCounter = 1000;
 
     public Employee() {
-        this.employeeId = ++employeeIdCounter;
-    }
+        //shouldnt always be used since the system can be used by old employee
+        }
 
     public Employee(String name) {}
 
@@ -14,23 +16,22 @@ public class Employee extends Salon {
     }
 
     public static void displayAppointment() {
-
+        System.out.println(Customer.getAppointments()); //is it working ?
     }
 
-    public void displayBill(Customer c) {
+    public void displayBill(String number) {
+        for (Appointment appointment: Customer.getAppointments()) {
+            if ((appointment.getPhone().equals((number)))){
+                appointment.getAppointment();
+            }
+    }}
 
-
-    }
-
-    public double offerDiscount(double discountPercentage, double totalBill) {
-        return 0;
-    }
-
-    @Override
-    public String toString() {
-        String sd = super.toString();
-        return "Employee{" +
-                "employeeId=" + employeeId +
-                '}' + sd;
+    public static double offerDiscount(double discountPercentage, String number) {
+        for (Appointment appointment : Customer.getAppointments()) {
+            if ((appointment.getPhone().equals((number)))) {
+                return discountPercentage ;
+            }
+        }
+        return discountPercentage;
     }
 }
