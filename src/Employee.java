@@ -19,7 +19,7 @@ public class Employee extends Salon {
         System.out.println(Customer.getAppointments()); //is it working ?
     }
 
-    public void displayBill(String number) {
+    public static void displayBill(String number) {
         for (Appointment appointment: Customer.getAppointments()) {
             if ((appointment.getPhone().equals((number)))){
                 appointment.getAppointment();
@@ -29,7 +29,7 @@ public class Employee extends Salon {
     public static double offerDiscount(double discountPercentage, String number) {
         for (Appointment appointment : Customer.getAppointments()) {
             if ((appointment.getPhone().equals((number)))) {
-                return discountPercentage ;
+                return discountPercentage;
             }
         }
         return discountPercentage;

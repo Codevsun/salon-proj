@@ -7,6 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
         Service.init();
+        Store.init();
         Customer customer = new Customer();
         String[] hairServiceNames = {"Blow dry", "Hairstyle", "Retro", "Haircut", "Hair dye", "Treatment"};
         String[] nailsServiceNames = {"Pedicure", "Manicure", "Nails Art", "Hand Nails Color", "Foot Nails Color"};
@@ -16,7 +17,7 @@ public class Main {
                 Choose
                 1.Employee
                 2.Customer
-                3.Salon's Store 
+                3.Salon's Store
                 """);
         int choice = scanner.nextInt();
         switch (choice) {
@@ -39,13 +40,11 @@ public class Main {
                             employeesArray.add(employeeSurvey());
                         }
                     }
-                    case 3 -> {
-                        Service.addStylist(employeeSurvey());
-                    }
+                    case 3 -> Service.addStylist(employeeSurvey());
                     case 4 -> {
                         System.out.println("Enter the Costumer's Phone Number to display the bill");
                         String costumersPhoneNumber = scanner.next();
-                        emp.displayBill(costumersPhoneNumber);
+                        Employee.displayBill(costumersPhoneNumber);
                     }
                     case 5 -> {
                         System.out.println("Enter the Costumer's Phone Number to Offer a discount ");
@@ -71,23 +70,22 @@ public class Main {
                     Appointment newAppointment = new Appointment();
                     System.out.println("Welcome to FAB Beauty Salon, please enter your name ");
                     String name = scanner.next();
-                    newAppointment.setName(name);
+                    customer.setName(name);
 
                     System.out.println("Email: ");
                     String email = scanner.next();
-                    newAppointment.setEmail(email);
+                    customer.setEmail(email);
 
                     System.out.println("Phone number: ");
                     String phoneNumber = scanner.next();
-                    newAppointment.setPhone(phoneNumber);
-
+                    customer.setPhone(phoneNumber);
 
                     System.out.println("Address: ");
                     String address = scanner.next();
-                    newAppointment.setAddress(address);
+                    customer.setAddress(address);
+                    newAppointment.setCustomer(customer);
 
-
-                       while (true) {
+                    while (true) {
                         System.out.println("""
                                 1. to add your desired services
                                 2. to view your added services
@@ -97,7 +95,6 @@ public class Main {
                         int servicesDesired = scanner.nextInt();
 
                         if (servicesDesired == 1) {
-                            ArrayList<Service> serviceArrayList = new ArrayList<>();
                             System.out.println("What would you like to to do today\n1. Hair \n2. Nails");
                             int customerService = scanner.nextInt();
                             switch (customerService) {
@@ -114,7 +111,7 @@ public class Main {
                                     hair.setCost(hairServicesCost(customerHairChoice));
                                     hair.setCost(hair.costForEachType(customersHairLength));
                                     Service service = new Service(hairServiceNames[customerHairChoice - 1], hair.getCost(), Service.getStylistById(stylistChoice));
-                                    serviceArrayList.add(service);
+                                    newAppointment.getServicesArrayList().add(service);
                                     newAppointment.setCustomer(customer);
                                 }
 
@@ -127,12 +124,11 @@ public class Main {
                                     Service.availableStylists();
                                     int stylistChoice = scanner.nextInt();
                                     Service service = new Service(nailsServiceNames[customerNailsChoice - 1], nailsServiceCost(customerNailsChoice), Service.getStylistById(stylistChoice));
-                                    serviceArrayList.add(service);
+                                    newAppointment.getServicesArrayList().add(service);
                                 }
 
                             }
 
-                            newAppointment.setServiceArrayList(serviceArrayList);
                             Customer.bookAppointment(newAppointment);
                         } else if (servicesDesired == 2) {
                             Appointment customerAppointment = customer.getAppointment();
@@ -141,8 +137,10 @@ public class Main {
                                 continue;
                             }
                             System.out.println(customerAppointment);
+                            customerAppointment.printServices();
                         } else if (servicesDesired == 3) {
-                            loop:while (true) {
+                            loop:
+                            while (true) {
                                 System.out.println("""
                                         What wold you like to edit?
                                          1. Name
@@ -201,18 +199,57 @@ public class Main {
                             customer.cancelAppointment();
 
                         } else if (servicesDesired == 0) {
-                             break;
+                            break;
                         }
                     }
                 } else {
                     System.exit(0);
                 }
             }
-            case 3->{
+            case 3 -> {
+                ArrayList<Store> cart = new ArrayList<>();
+                System.out.println("Welcome to FAB's Beauty Press " +
+                        "1. Enter the store" +
+                        "2. Exit");
+                int serviceProducts = scanner.nextInt();
+                if (serviceProducts == 1) {
+                    while (true) {
+                        System.out.println("1. add to cart\n0.Done  ");
+                        int customerChoice = scanner.nextInt();
+                        if (customerChoice == 1) {
+                            System.out.println("Our Products ");
+                            int i = 0;
+                            for (Store store : Store.getProductsArray()) {
+                                System.out.print(i + 1 + ".");
+                                System.out.println(store);
+                                i++;
+                            }
+                            System.out.println("Enter your product ");
+                            int productChoice = scanner.nextInt();
+                            cart.add(Store.getProductsArray().get(productChoice - 1));
 
+                        } else if (customerChoice == 2) {
+                            for (Store s : cart) {
+                                System.out.println(s);
+                            }
+                            double total = 0;
+                            for (Store store : cart) {
+                                total += store.getCost();
+                            }
+                            System.out.println("Total: " + total);
+                        } else if (customerChoice == 0) {
+                            break;
+                        }
+                    }
+                }
+
+                else if (serviceProducts == 0) {
+                    System.exit(0);
+                }
             }
         }
     }
+
 
     public static double discountPercentage(int choice) {
         return switch (choice) {
@@ -226,10 +263,10 @@ public class Main {
     public static double hairServicesCost(int choice) {
         return switch (choice) {
             case 1 -> 120;
-            case 2,5-> 100;
-            case 3-> 200;
+            case 2, 5 -> 100;
+            case 3 -> 200;
             case 4 -> 50;
-            default-> 0;
+            default -> 0;
         };
     }
 

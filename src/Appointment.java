@@ -5,6 +5,7 @@ public class Appointment extends Customer {
     private final String id = UUID.randomUUID().toString();
     private ArrayList<Service> serviceArrayList = new ArrayList<>();
     private Customer customer;
+
     public Appointment() {
     }
 
@@ -21,14 +22,22 @@ public class Appointment extends Customer {
         return serviceArrayList;
     }
 
+    public void printServices() {
+        for (Service service : serviceArrayList) {
+            System.out.println("Service(" +
+                    "name: " + service.getName() + ", " +
+                    "cost: " + service.getCost() + ", " +
+                    "stylist name: " + service.getStylistName() + ")");
+        }
+    }
+
     @Override
     public String toString() {
-        return "Name: " + this.getName() +
-                "\nEmail: " + this.getEmail() +
-                "\nPhoneNumber: " + this.getPhone() +
-                "\nAddress: " + this.getAddress() +
-                "\nCustomer ID: " + getCustomerId() +
-                "\nAppointment: \n" + getServicesArrayList();
+        return "Name: " + this.customer.getName() +
+                "\nEmail: " + this.customer.getEmail() +
+                "\nPhoneNumber: " + this.customer.getPhone() +
+                "\nAddress: " + this.customer.getAddress() +
+                "\nCustomer ID: " + getCustomerId();
     }
 
     public Customer getCustomer() {
