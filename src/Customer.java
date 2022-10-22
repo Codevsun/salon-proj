@@ -88,13 +88,8 @@ public class Customer extends Salon {
     }
 
     public void cancelAppointment() {
-        for (Appointment appointment : appointments) {
-            if (appointment.getCustomerId().equals(this.customerId)) {
-                appointments.remove(appointments);
-            }
-        }
+        appointments.removeIf(appointment -> appointment.getCustomer() == this);
     }
-
 
 }
 

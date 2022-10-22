@@ -16,12 +16,11 @@ public class Hair extends Service {
                 6.Treatment""");
     }
 
-    public double costForEachType(String hairLength) {
+    public double costForEachType(Length hairLength) {
         return switch (hairLength) {
-            case "Long" -> getCost() + 100.0;
-            case "Medium" -> getCost() + 50.0;
-            case "Short" -> getCost() + 20;
-            default -> 0;
+            case LONG -> getCost() + 100.0;
+            case MEDIUM -> getCost() + 50.0;
+            case SHORT -> getCost() + 20;
         };
     }
 
@@ -31,6 +30,12 @@ public class Hair extends Service {
 
     public ArrayList<Service> getServices() {
         return services;
+    }
+
+    enum Length {
+        LONG,
+        MEDIUM,
+        SHORT
     }
 
 }

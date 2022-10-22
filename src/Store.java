@@ -60,13 +60,13 @@ public class Store {
          productsArray.add(newProduct);
      }
 
-    public void productAvailability(String EproductName, Boolean isAvailable) {
-        if(EproductName.equals(this.productName)){
+    public void productAvailability(String productName2, Boolean isAvailable) {
+        if(productName2.equals(this.productName)){
             setAvailable(isAvailable);
         } // employee can edit this
     }
-    public void productIfAvailable(ArrayList<Store> AproductsArray){
-        for(int i = 0 ; i < AproductsArray.size();i ++){
+    public void productIfAvailable(ArrayList<Store> productsArray2){
+        for(int i = 0 ; i < productsArray2.size();i ++){
             if (this.isAvailable){
                 continue;
             }else {

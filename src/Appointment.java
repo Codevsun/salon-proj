@@ -7,9 +7,11 @@ public class Appointment extends Customer {
     private Customer customer;
 
     public Appointment() {
+        System.out.println("*".repeat(50));
     }
 
     public Appointment(ArrayList<Service> serviceArrayList, Customer customer) {
+        System.out.println("#".repeat(50));
         this.serviceArrayList = serviceArrayList;
         this.customer = customer;
     }
@@ -23,6 +25,10 @@ public class Appointment extends Customer {
     }
 
     public void printServices() {
+        if (serviceArrayList.size() < 1) {
+            System.out.println("Empty array");
+            return;
+        }
         for (Service service : serviceArrayList) {
             System.out.println("Service(" +
                     "name: " + service.getName() + ", " +
