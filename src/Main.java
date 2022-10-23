@@ -33,34 +33,43 @@ public class Main {
         ArrayList<Store> cart = new ArrayList<>();
         System.out.println("""
                 Welcome to FAB's Beauty
-                "1. Enter the store
-                "2. Exit""");
+                1. Enter the store
+                0. Back""");
         int serviceProducts = scanner.nextInt();
         if (serviceProducts == 1) {
             while (true) {
-                System.out.println("1. add to cart\n0.Done  ");
+                System.out.println("1. View Products\n" +
+                        "2. View Bill\n " +
+                        "0. Back to Main Menu ");
                 int customerChoice = scanner.nextInt();
                 if (customerChoice == 1) {
-                    System.out.println("Our Products ");
+                    System.out.println(prettyPrint("Products"));
                     int i = 0;
                     for (Store store : Store.getProductsArray()) {
-                        System.out.print(i + 1 + ".");
+
+                        System.out.print("\n"+(i + 1 )+ ".");
                         System.out.println(store);
                         i++;
                     }
-                    System.out.println("Enter your product ");
+                    System.out.println("\n"+"*Enter your product ");
                     int productChoice = scanner.nextInt();
                     cart.add(Store.getProductsArray().get(productChoice - 1));
 
                 } else if (customerChoice == 2) {
+                    System.out.println(prettyPrint("BILL"));
+                    int i = 0;
                     for (Store s : cart) {
+                        System.out.print(i+1+ ". ");
                         System.out.println(s);
+                        i++;
                     }
+
                     double total = 0;
                     for (Store store : cart) {
                         total += store.getCost();
                     }
-                    System.out.println("Total: " + total);
+                    System.out.println("*Total: " + total+"\n"+prettyPrintFooter(60));
+
                 } else if (customerChoice == 0) {
                     break;
                 }
@@ -113,8 +122,7 @@ public class Main {
         String email = scanner.next();
         customer.setEmail(email);
 
-        System.out.println("Phone number: ");
-        String phoneNumber = scanner.next();
+        String phoneNumber = phoneValidity(scanner);
         customer.setPhone(phoneNumber);
 
         System.out.println("Address: ");
@@ -156,7 +164,7 @@ public class Main {
                      2. Email
                      3. Phone Number
                      4. Address
-                     5. Change stylist2
+                     5. Change your stylist
                      0. Go back
                      """);
             int editChoice = scanner.nextInt();
@@ -171,8 +179,7 @@ public class Main {
                     newEmail = scanner.next();
                 }
                 case 3 -> {
-                    System.out.println("Please enter the new Phone Number");
-                    newPhoneNumber = scanner.next();
+                    newPhoneNumber = phoneValidity(scanner);
                 }
                 case 4 -> {
                     System.out.println("Please enter the new Address");
@@ -233,7 +240,7 @@ public class Main {
                 System.out.println("What's your hair's length ?[Long, Medium, Short] ");
                 String customersHairLength = scanner.next();
                 customersHairLength = customersHairLength.toUpperCase();
-                hair.setCost(hairServicesCost(customerHairChoice));
+                hair.setCost(Hair.hairServicesCost(customerHairChoice));
                 hair.setCost(hair.costForEachType(Hair.Length.valueOf(customersHairLength)));
                 Service service = new Service(hairServiceNames[customerHairChoice - 1], hair.getCost(), Service.getStylistById(stylistChoice));
                 newAppointment.getServicesArrayList().add(service);
@@ -247,7 +254,7 @@ public class Main {
                 System.out.println("Choose your Nails stylists");
                 Service.availableStylists();
                 int stylistChoice = scanner.nextInt();
-                Service service = new Service(nailsServiceNames[customerNailsChoice - 1], nailsServiceCost(customerNailsChoice), Service.getStylistById(stylistChoice));
+                Service service = new Service(nailsServiceNames[customerNailsChoice - 1], Nails.nailsServiceCost(customerNailsChoice), Service.getStylistById(stylistChoice));
                 newAppointment.getServicesArrayList().add(service);
             }
 
@@ -262,16 +269,12 @@ public class Main {
                 3. Add a new Stylist
                 4. Display Customer's Bill
                 5. Offer A discount
-                6. Exit""");
+                6. Add a New product to the Store""");
         int employeeChoice = scanner.nextInt();
         ArrayList<Employee> employeesArray = new ArrayList<>();
         switch (employeeChoice) {
-            case 1 -> Employee.displayAppointment();
-            case 2 -> {
-                while (employeesArray.size() < 15) {
-                    employeesArray.add(employeeSurvey());
-                }
-            }
+            case 1 -> Employee.displayBill();
+            case 2 -> {employeesArray.add(employeeSurvey());}
             case 3 -> Service.addStylist(employeeSurvey());
             case 4 -> {
                 System.out.println("Enter the Costumer's Phone Number to display the bill");
@@ -284,14 +287,30 @@ public class Main {
                 Employee.displayBill(costumersPhoneNumber);
                 System.out.println("please enter customer's old total");
                 double costumerOldTotal = scanner.nextInt();
+
                 System.out.println("""
                         What Type of Discount you would like to offer ?
                          1.Golden
                          2.Silver
                          3.Bronze""");
                 int employeesChoiceForTheDiscount = scanner.nextInt();
-                double discountedTotal = Employee.offerDiscount(discountPercentage(employeesChoiceForTheDiscount), costumersPhoneNumber, costumerOldTotal);
-                System.out.println("you total after discount is: " + discountedTotal);
+                System.out.println(Employee.offerDiscount(discountPercentage(employeesChoiceForTheDiscount),costumerOldTotal));
+
+            }
+            case 6 ->{
+                System.out.println(prettyPrint("Adding product"));
+                System.out.println("Product's Name: ");
+                String newProductName= scanner.next();
+                System.out.println("How much does it Cost: ");
+                double newProductPrice = scanner.nextDouble();
+                System.out.println("Set Product Availability:[t/f] ");
+                char trueFalse=scanner.next().charAt(0);
+                Store newProduct = new Store(newProductName,newProductPrice,isTrue(trueFalse));
+                newProduct.addNewProduct(newProduct);
+
+            }
+            case 7 ->{
+
             }
         }
     }
@@ -306,15 +325,6 @@ public class Main {
         };
     }
 
-    public static double hairServicesCost(int choice) {
-        return switch (choice) {
-            case 1 -> 120;
-            case 2, 5 -> 100;
-            case 3 -> 200;
-            case 4 -> 50;
-            default -> 0;
-        };
-    }
 
     public static Employee employeeSurvey() {
         String phoneNumber;
@@ -322,13 +332,7 @@ public class Main {
         System.out.println("Please enter your Name :");
         String name = scanner.next();
 
-        do {
-            System.out.println("Please enter your phoneNumber :");
-            phoneNumber = scanner.next();
-            if (Main.isInvalidMobileNumber(phoneNumber)) {
-                System.out.println("Invalid number");
-            }
-        } while (isInvalidMobileNumber(phoneNumber));
+        phoneNumber = phoneValidity(scanner);
 
         System.out.println("Email :");
         String email = scanner.next();
@@ -337,6 +341,25 @@ public class Main {
         return new Employee(name, email, phoneNumber, address);
     }
 
+    private static String phoneValidity(Scanner scanner) {
+        String phoneNumber;
+        do {
+            System.out.println("Please enter your phoneNumber :");
+            phoneNumber = scanner.next();
+            if (Main.isInvalidMobileNumber(phoneNumber)) {
+                System.out.println("Invalid number");
+            }
+        } while (isInvalidMobileNumber(phoneNumber));
+        return phoneNumber;
+    }
+    public static boolean isTrue(char truefalse) {
+        if (truefalse == 't') {
+            return true;
+        } else if (truefalse == 'f') {
+            return false;
+        }
+        return false;
+    }
     public static boolean isInvalidMobileNumber(String phone) {
         //phone doesnt contain special characters if its a saudi no.
         return (phone.length() <= 10 ||
@@ -348,15 +371,7 @@ public class Main {
 
     }
 
-    public static double nailsServiceCost(int choice) {
-        return switch (choice) {
-            case 1 -> 70;
-            case 2 -> 200;
-            case 3 -> 230;
-            case 4, 5 -> 50;
-            default -> 0;
-        };
-    }
+
 
     public static String prettyPrint(String header) {
         String repeat = "=".repeat(25);
@@ -368,6 +383,3 @@ public class Main {
     }
 
 }
-
-
-

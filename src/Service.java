@@ -34,10 +34,6 @@ public class Service {
         return stylistArrayList.get(choice - 1).getName();
     }
 
-    public static Employee getStylist(int stylistIndex) {
-        return stylistArrayList.get(stylistIndex);
-    }
-
     @Override
     public String toString() {
         return "Services: " + name + '\n' + " Price: " + cost + "\n" + " stylistName='" + getStylistName();
@@ -55,17 +51,12 @@ public class Service {
         return stylistArrayList;
     }
 
-    public void setStylist(ArrayList<Employee> stylist) {
-        stylistArrayList = stylist;
-    }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+
 
     public  double getCost() {
         return cost ;
@@ -79,9 +70,6 @@ public class Service {
         stylistArrayList.add(employee);
     }
 
-    public void removeStylist(Employee employee) {
-        stylistArrayList.remove(employee);
-    }
 
 
 }

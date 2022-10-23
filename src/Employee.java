@@ -14,7 +14,7 @@ public class Employee extends Salon {
         this.employeeId = ++employeeIdCounter;
     }
 
-    public static void displayAppointment() {
+    public static void displayBill() {
         if (Customer.getAppointments().size() == 0) {
             System.out.println("No appointments for today. You can have the day off :)");
             return;
@@ -29,19 +29,18 @@ public class Employee extends Salon {
     }
 
     public static void displayBill(String number) {
+
         for (Appointment appointment : Customer.getAppointments()) {
-            if (appointment.getCustomer().getPhone().equals((number))) {
-                appointment.getAppointment();
+            if (appointment.getCustomer().getPhone().equals(number)) {
+                System.out.println(appointment);
+                appointment.printServices();
             }
+
         }
     }
 
-    public static double offerDiscount(double discountPercentage, String number, double cost) {
-        for (Appointment appointment : Customer.getAppointments()) {
-            if ((appointment.getPhone().equals((number)))) {
-                return discountPercentage * cost;
-            }
-        }
-        return cost;
+    public static String offerDiscount(double discountPercentage,  double cost) {
+        return "The discount on your bill is "+discountPercentage*100 +"%"+"\n"+"Customer's new Total is "+ cost*discountPercentage ;
+
     }
 }

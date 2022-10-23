@@ -10,13 +10,21 @@ public class Nails extends Service {
     public Nails() {}
 
     public void displayMenu(){
-        System.out.println("1.Pedicure" +
-                "\n2.Manicure\n" +
-                        "3.Nail Art\n" +
-                "4.Nails color");
+        System.out.println("""
+                1.Pedicure"\040
+                2.Manicure
+                3.Nail Art
+                4.Nails color""");
     }
-    public double costForEachLength(){return 0;}
-    public double totalBill(){return 0;}
+    public static double nailsServiceCost(int choice) {
+        return switch (choice) {
+            case 1 -> 70;
+            case 2 -> 200;
+            case 3 -> 230;
+            case 4, 5 -> 50;
+            default -> 0;
+        };
+    }
 
     public ArrayList<Service> getServices() {
         return services;
