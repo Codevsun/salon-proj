@@ -1,19 +1,16 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 public class Main {
     static Scanner scanner = new Scanner(System.in);
-    private static final boolean isRunning = true;
 
     public static void main(String[] args) {
         Service.init();
         Store.init();
-        Customer customer = new Customer();
         String[] hairServiceNames = {"Blow dry", "Hairstyle", "Retro", "Haircut", "Hair dye", "Treatment"};
         String[] nailsServiceNames = {"Pedicure", "Manicure", "Nails Art", "Hand Nails Color", "Foot Nails Color"};
 
-        while (isRunning) {
+        while (true) {
             System.out.println(prettyPrint("Welcome to FAB Beauty Salon"));
             System.out.println("""
                     Select an option from the menu
@@ -23,63 +20,60 @@ public class Main {
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1 -> employee();
-                case 2 -> customer(customer, hairServiceNames, nailsServiceNames);
+                case 2 -> customer(hairServiceNames, nailsServiceNames);
                 case 3 -> salonStore();
+                default -> System.out.println("Invalid Input!!");
             }
         }
     }
 
     private static void salonStore() {
         ArrayList<Store> cart = new ArrayList<>();
-        System.out.println("""
-                Welcome to FAB's Beauty
-                1. Enter the store
-                0. Back""");
-        int serviceProducts = scanner.nextInt();
-        if (serviceProducts == 1) {
-            while (true) {
-                System.out.println("1. View Products\n" +
-                        "2. View Bill\n " +
-                        "0. Back to Main Menu ");
-                int customerChoice = scanner.nextInt();
-                if (customerChoice == 1) {
-                    System.out.println(prettyPrint("Products"));
-                    int i = 0;
-                    for (Store store : Store.getProductsArray()) {
-
-                        System.out.print("\n"+(i + 1 )+ ".");
-                        System.out.println(store);
-                        i++;
-                    }
-                    System.out.println("\n"+"*Enter your product ");
-                    int productChoice = scanner.nextInt();
-                    cart.add(Store.getProductsArray().get(productChoice - 1));
-
-                } else if (customerChoice == 2) {
-                    System.out.println(prettyPrint("BILL"));
-                    int i = 0;
-                    for (Store s : cart) {
-                        System.out.print(i+1+ ". ");
-                        System.out.println(s);
-                        i++;
-                    }
-
-                    double total = 0;
-                    for (Store store : cart) {
-                        total += store.getCost();
-                    }
-                    System.out.println("*Total: " + total+"\n"+prettyPrintFooter(60));
-
-                } else if (customerChoice == 0) {
-                    break;
+        while (true) {
+            System.out.println("""
+                    1. View Products Menu
+                    2. View Bill
+                    0. Back to Main Menu""");
+            int customerChoice = scanner.nextInt();
+            if (customerChoice == 1) {
+                System.out.println(prettyPrint("Products"));
+                int i = 0;
+                for (Store store : Store.getProductsArray()) {
+                    System.out.print("\n" + (i + 1) + ".");
+                    System.out.println(store);
+                    i++;
                 }
+                System.out.println("\n" + "Enter your product ");
+                int productChoice = scanner.nextInt();
+                if (Store.getProductsArray().get(productChoice - 1).productIfAvailable(productChoice - 1)) {
+                    cart.add(Store.getProductsArray().get(productChoice - 1));
+                } else {
+                    System.out.println("Sorry! The product you requested is currently unavailable.");
+                }
+
+            } else if (customerChoice == 2) {
+                System.out.println(prettyPrint("BILL"));
+                int i = 0;
+                for (Store s : cart) {
+                    System.out.print(i + 1 + ". ");
+                    System.out.println(s);
+                    i++;
+                }
+
+                double total = 0;
+                for (Store store : cart) {
+                    total += store.getCost();
+                }
+                System.out.println("*Total: " + total + "\n" + prettyPrintFooter(60));
+
+            } else if (customerChoice == 0) {
+                break;
             }
-        } else if (serviceProducts == 0) {
-            System.exit(0);
         }
     }
 
-    private static void customer(Customer customer, String[] hairServiceNames, String[] nailsServiceNames) {
+    private static void customer(String[] hairServiceNames, String[] nailsServiceNames) {
+        Customer customer = null;
         System.out.println(prettyPrint("customer"));
         System.out.println("""
                 1. Book Appointment
@@ -89,15 +83,17 @@ public class Main {
         int customerChoice = scanner.nextInt();
 
         switch (customerChoice) {
-            case 1 -> bookCustomerAppointment(customer, hairServiceNames, nailsServiceNames);
+            case 1 -> {
+                customer = bookCustomerAppointment(hairServiceNames, nailsServiceNames);
+            }
             case 2 -> editCustomerAppointment(customer);
             case 3 -> cancelCustomerAppointment(customer);
         }
     }
 
     private static void cancelCustomerAppointment(Customer customer) {
-        if (customer.getAppointment() == null) {
-            System.out.println("* You don't have any appointments");
+        if (customer == null || customer.getAppointment() == null) {
+            System.out.println("* You don't have an appointment yet.");
             return;
         }
 
@@ -109,7 +105,8 @@ public class Main {
         }
     }
 
-    private static void bookCustomerAppointment(Customer customer, String[] hairServiceNames, String[] nailsServiceNames) {
+    private static Customer bookCustomerAppointment(String[] hairServiceNames, String[] nailsServiceNames) {
+        Customer customer = new Customer();
         Appointment newAppointment = new Appointment();
         newAppointment.setCustomer(customer);
 
@@ -139,22 +136,29 @@ public class Main {
                     Press 0 to Exit""");
             int servicesDesired = scanner.nextInt();
             switch (servicesDesired) {
-                case 1 -> addDesiredService(hairServiceNames, nailsServiceNames, newAppointment);
-                case 2 -> viewAddedServices(newAppointment);
+                case 1 ->
+                        newAppointment = addDesiredService(hairServiceNames, nailsServiceNames, newAppointment, customer);
+                case 2 -> viewAddedServices(customer);
                 case 3 -> editCustomerAppointment(customer);
-                case 4 -> customer.cancelAppointment();
+                case 4 -> {
+                    customer.cancelAppointment();
+                    newAppointment = null;
+                }
                 case 0 -> {
                     break loop;
                 }
                 default -> System.out.println("Invalid input");
             }
         }
-        if (newAppointment.getServicesArrayList().size() > 0) {
-            Customer.bookAppointment(newAppointment);
-        }
+
+        return customer;
     }
 
     private static void editCustomerAppointment(Customer customer) {
+        if (customer == null) {
+            System.out.println("* You don't have an appointment yet.");
+            return;
+        }
         String editAppointmentMessage = prettyPrint("Edit Appointment");
         System.out.println(editAppointmentMessage);
         while (true) {
@@ -213,19 +217,24 @@ public class Main {
         }
     }
 
-    private static void viewAddedServices(Appointment newAppointment) {
-        if (newAppointment == null) {
+    private static void viewAddedServices(Customer customer) {
+        if (customer.getAppointment() == null) {
             System.out.println("You don't have any appointments yet");
             return;
         }
         String header = prettyPrint("Added services");
         System.out.println(header);
-        System.out.println(newAppointment);
-        newAppointment.printServices();
+        System.out.println(customer.getAppointment());
+        customer.getAppointment().printServices();
         System.out.println(prettyPrintFooter(header.length()));
     }
 
-    private static void addDesiredService(String[] hairServiceNames, String[] nailsServiceNames, Appointment newAppointment) {
+    private static Appointment addDesiredService(String[] hairServiceNames, String[] nailsServiceNames, Appointment newAppointment, Customer customer) {
+        if (newAppointment == null) {
+            newAppointment = new Appointment();
+            newAppointment.setCustomer(customer);
+        }
+
         System.out.println("What would you like to to do today\n1. Hair \n2. Nails");
         int customerService = scanner.nextInt();
         switch (customerService) {
@@ -259,6 +268,10 @@ public class Main {
             }
 
         }
+
+        Customer.bookAppointment(newAppointment);
+
+        return newAppointment;
     }
 
     private static void employee() {
@@ -269,12 +282,14 @@ public class Main {
                 3. Add a new Stylist
                 4. Display Customer's Bill
                 5. Offer A discount
-                6. Add a New product to the Store""");
+                6. Add a New product to the Store
+                7. Set an Out of stock Products""");
         int employeeChoice = scanner.nextInt();
         ArrayList<Employee> employeesArray = new ArrayList<>();
+
         switch (employeeChoice) {
             case 1 -> Employee.displayBill();
-            case 2 -> {employeesArray.add(employeeSurvey());}
+            case 2 -> employeesArray.add(employeeSurvey());
             case 3 -> Service.addStylist(employeeSurvey());
             case 4 -> {
                 System.out.println("Enter the Costumer's Phone Number to display the bill");
@@ -294,27 +309,39 @@ public class Main {
                          2.Silver
                          3.Bronze""");
                 int employeesChoiceForTheDiscount = scanner.nextInt();
-                System.out.println(Employee.offerDiscount(discountPercentage(employeesChoiceForTheDiscount),costumerOldTotal));
-
+                System.out.println(Employee.offerDiscount(discountPercentage(employeesChoiceForTheDiscount), costumerOldTotal));
             }
-            case 6 ->{
+
+            case 6 -> {
                 System.out.println(prettyPrint("Adding product"));
                 System.out.println("Product's Name: ");
-                String newProductName= scanner.next();
+                String newProductName = scanner.next();
                 System.out.println("How much does it Cost: ");
                 double newProductPrice = scanner.nextDouble();
                 System.out.println("Set Product Availability:[t/f] ");
-                char trueFalse=scanner.next().charAt(0);
-                Store newProduct = new Store(newProductName,newProductPrice,isTrue(trueFalse));
+                char trueFalse = scanner.next().charAt(0);
+                Store newProduct = new Store(newProductName, newProductPrice, isTrue(trueFalse));
                 newProduct.addNewProduct(newProduct);
-
             }
-            case 7 ->{
 
+            case 7 -> {
+                Store store = new Store();
+                System.out.println(prettyPrint("PRODUCT STOCK"));
+                System.out.println("Which product is out of stock at the moment ");
+                int i = 0;
+                for (Store store1 : Store.getProductsArray()) {
+                    System.out.println(i + 1 + "." + store1.getProductName());
+                    i++;
+                }
+                scanner.nextLine();
+                System.out.println("Products Name: ");
+                String productName = scanner.nextLine();
+                System.out.println("Enter 'f' for setting it as Unavailable");
+                char outOfStuck = scanner.next().charAt(0);
+                store.productAvailability(productName, isTrue(outOfStuck));
             }
         }
     }
-
 
     public static double discountPercentage(int choice) {
         return switch (choice) {
@@ -324,7 +351,6 @@ public class Main {
             default -> 0;
         };
     }
-
 
     public static Employee employeeSurvey() {
         String phoneNumber;
@@ -352,14 +378,19 @@ public class Main {
         } while (isInvalidMobileNumber(phoneNumber));
         return phoneNumber;
     }
+
     public static boolean isTrue(char truefalse) {
         if (truefalse == 't') {
+            System.out.println("Product should be available now!");
             return true;
         } else if (truefalse == 'f') {
+            System.out.println("Product should be unavailable now.");
             return false;
         }
+        System.out.println("tf is this");
         return false;
     }
+
     public static boolean isInvalidMobileNumber(String phone) {
         //phone doesnt contain special characters if its a saudi no.
         return (phone.length() <= 10 ||
@@ -370,8 +401,6 @@ public class Main {
                         !(phone.contains("-"))));
 
     }
-
-
 
     public static String prettyPrint(String header) {
         String repeat = "=".repeat(25);

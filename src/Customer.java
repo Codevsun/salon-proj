@@ -3,14 +3,18 @@ import java.util.UUID;
 
 public class Customer extends Salon {
 
-    private static ArrayList<Appointment> appointments = new ArrayList<>();
+    private static final ArrayList<Appointment> appointments = new ArrayList<>();
 
-    private  String customerId;
+    private String customerId;
 
     public Customer() {
         this.customerId = UUID.randomUUID().toString();
     }
-public Customer(Appointment appointment){bookAppointment(appointment);}
+
+    public Customer(Appointment appointment) {
+        bookAppointment(appointment);
+    }
+
     public Customer(String name, String email, String phone, String address) {
         super(name, email, phone, address);
         this.customerId = UUID.randomUUID().toString();
@@ -20,7 +24,7 @@ public Customer(Appointment appointment){bookAppointment(appointment);}
         return appointments;
     }
 
-    public  static void bookAppointment(Appointment appointment) {
+    public static void bookAppointment(Appointment appointment) {
         appointments.add(appointment);
     }
 
@@ -77,7 +81,7 @@ public Customer(Appointment appointment){bookAppointment(appointment);}
     }
 
     public void cancelAppointment() {
-        appointments.removeIf(appointment -> appointment.getCustomer() == this);
+        getAppointments().remove(getAppointment());
     }
 
 }
