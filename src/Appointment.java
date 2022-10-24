@@ -6,7 +6,8 @@ public class Appointment extends Customer {
     private ArrayList<Service> serviceArrayList = new ArrayList<>();
     private Customer customer;
 
-    public Appointment() {}
+    public Appointment() {
+    }
 
     public Appointment(ArrayList<Service> serviceArrayList, Customer customer) {
         System.out.println("#".repeat(50));
@@ -53,14 +54,6 @@ public class Appointment extends Customer {
         this.customer = newCustomer;
     }
 
-    public void TotalBill(){
-        double totalCost=0;
-        for (Service service: getServicesArrayList()){
-            totalCost += service.getCost();
-        }
-        System.out.println("*Total is: "+totalCost);
-
-    }
 
     public void setServiceArrayList(ArrayList<Service> serviceArrayList) {
         this.serviceArrayList = serviceArrayList;

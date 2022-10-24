@@ -2,24 +2,18 @@ public class Employee extends Salon {
     private static int employeeIdCounter = 1000;
     public int employeeId;
 
-    public Employee() {
-        //shouldnt always be used since the system can be used by old employee
-    }
-
-    public Employee(String name) {
-    }
 
     public Employee(String name, String email, String phone, String address) {
         super(name, email, phone, address);
         this.employeeId = ++employeeIdCounter;
     }
 
-    public static void displayBill() {
+    public static void display() {
         if (Customer.getAppointments().size() == 0) {
             System.out.println("No appointments for today. You can have the day off :)");
             return;
         }
-        for (Appointment appointment: Customer.getAppointments()) {
+        for (Appointment appointment : Customer.getAppointments()) {
             String header = "=".repeat(20) + " [ " + appointment.getId() + " ] " + "=".repeat(20);
             System.out.println(header);
             System.out.println(appointment);
@@ -28,7 +22,7 @@ public class Employee extends Salon {
         }
     }
 
-    public static void displayBill(String number) {
+    public static void display(String number) {
 
         for (Appointment appointment : Customer.getAppointments()) {
             if (appointment.getCustomer().getPhone().equals(number)) {
@@ -39,8 +33,8 @@ public class Employee extends Salon {
         }
     }
 
-    public static String offerDiscount(double discountPercentage,  double cost) {
-        return "The discount on your bill is "+discountPercentage*100 +"%"+"\n"+"Customer's new Total is "+ cost*discountPercentage ;
+    public static String offerDiscount(double discountPercentage, double cost) {
+        return "The discount on your bill is " + discountPercentage * 100 + "%" + "\n" + "Customer's new Total is " + cost * discountPercentage;
 
     }
 }

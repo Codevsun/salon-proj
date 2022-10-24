@@ -39,6 +39,9 @@ public class Main {
                 System.out.println(prettyPrint("Products"));
                 int i = 0;
                 for (Store store : Store.getProductsArray()) {
+                    if (!store.isAvailable()) {
+                        continue;
+                    }
                     System.out.print("\n" + (i + 1) + ".");
                     System.out.println(store);
                     i++;
@@ -48,7 +51,7 @@ public class Main {
                 if (Store.getProductsArray().get(productChoice - 1).productIfAvailable(productChoice - 1)) {
                     cart.add(Store.getProductsArray().get(productChoice - 1));
                 } else {
-                    System.out.println("Sorry! The product you requested is currently unavailable.");
+                    System.out.println("Sorry! The product you requested is unavailable.");
                 }
 
             } else if (customerChoice == 2) {
@@ -288,21 +291,20 @@ public class Main {
         ArrayList<Employee> employeesArray = new ArrayList<>();
 
         switch (employeeChoice) {
-            case 1 -> Employee.displayBill();
+            case 1 -> Employee.display();
             case 2 -> employeesArray.add(employeeSurvey());
             case 3 -> Service.addStylist(employeeSurvey());
             case 4 -> {
                 System.out.println("Enter the Costumer's Phone Number to display the bill");
                 String costumersPhoneNumber = scanner.next();
-                Employee.displayBill(costumersPhoneNumber);
+                Employee.display(costumersPhoneNumber);
             }
             case 5 -> {
                 System.out.println("Enter the customer's Phone Number to Offer a discount ");
                 String costumersPhoneNumber = scanner.next();
-                Employee.displayBill(costumersPhoneNumber);
+                Employee.display(costumersPhoneNumber);
                 System.out.println("please enter customer's old total");
                 double costumerOldTotal = scanner.nextInt();
-
                 System.out.println("""
                         What Type of Discount you would like to offer ?
                          1.Golden

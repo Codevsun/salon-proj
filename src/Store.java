@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Store {
-    private static ArrayList<Store> productsArray = new ArrayList<>();
+    private static final ArrayList<Store> productsArray = new ArrayList<>();
     private double cost;
     private boolean isAvailable;
     private String productName;
@@ -17,10 +17,6 @@ public class Store {
 
     public static ArrayList<Store> getProductsArray() {
         return productsArray;
-    }
-
-    public static void setProductsArray(ArrayList<Store> productsArray) {
-        Store.productsArray = productsArray;
     }
 
     public static void init() {
@@ -48,19 +44,16 @@ public class Store {
         return productName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
 
     public void addNewProduct(Store newProduct) {
         productsArray.add(newProduct);
     }
 
-    public void productAvailability(String productName2, Boolean availableOrNah) {
+    public void productAvailability(String productName2, Boolean availableOrNot) {
         Store.productsArray.forEach(product -> {
             if (productName2.equals(product.getProductName())) {
-                product.setAvailable(availableOrNah);
-                System.out.println("Set " + product.productName + " to " + product.isAvailable());
+                product.setAvailable(availableOrNot);
+
             } // employee can edit this
         });
     }

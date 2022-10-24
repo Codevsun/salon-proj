@@ -5,20 +5,12 @@ public class Customer extends Salon {
 
     private static final ArrayList<Appointment> appointments = new ArrayList<>();
 
-    private String customerId;
+    private final String customerId;
 
     public Customer() {
         this.customerId = UUID.randomUUID().toString();
     }
 
-    public Customer(Appointment appointment) {
-        bookAppointment(appointment);
-    }
-
-    public Customer(String name, String email, String phone, String address) {
-        super(name, email, phone, address);
-        this.customerId = UUID.randomUUID().toString();
-    }
 
     public static ArrayList<Appointment> getAppointments() {
         return appointments;

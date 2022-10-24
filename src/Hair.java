@@ -5,8 +5,19 @@ public class Hair extends Service {
 
     public Hair() {
     }
-    public void iniet(){
 
+    public static double hairServicesCost(int choice) {
+        return switch (choice) {
+            case 1 -> 120;
+            case 2, 5 -> 100;
+            case 3 -> 200;
+            case 4 -> 50;
+            default -> 0;
+        };
+    }
+
+    public ArrayList<Service> getServices() {
+        return services;
     }
 
     public void displayMenu() {
@@ -17,15 +28,6 @@ public class Hair extends Service {
                 4.Haircut
                 5.Hair Dye
                 6.Treatment""");
-    }
-    public static double hairServicesCost(int choice) {
-        return switch (choice) {
-            case 1 -> 120;
-            case 2, 5 -> 100;
-            case 3 -> 200;
-            case 4 -> 50;
-            default -> 0;
-        };
     }
 
     public double costForEachType(Length hairLength) {

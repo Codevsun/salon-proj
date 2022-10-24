@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
 public class Service {
-    private static ArrayList<Employee> stylistArrayList = new ArrayList<>();
+    private static final ArrayList<Employee> stylistArrayList = new ArrayList<>();
     private String name;
-    private  double cost;
+    private double cost;
     private String stylistName;
 
     public Service(String name, double cost, String stylistName) {
@@ -12,7 +12,8 @@ public class Service {
         this.stylistName = stylistName;
     }
 
-    public Service() {}
+    public Service() {
+    }
 
     public static void init() {
         stylistArrayList.add(new Employee("Sali", "Sali@gmail.com", "0555807637", "Dammam"));
@@ -26,12 +27,20 @@ public class Service {
         int i = 0;
         for (Employee employee : stylistArrayList) {
             System.out.println((i + 1) + " -> " + employee.getName());
-            i ++;
+            i++;
         }
     }
 
     public static String getStylistById(int choice) {
         return stylistArrayList.get(choice - 1).getName();
+    }
+
+    public static ArrayList<Employee> getStylistArrayList() {
+        return stylistArrayList;
+    }
+
+    public static void addStylist(Employee employee) {
+        stylistArrayList.add(employee);
     }
 
     @Override
@@ -43,33 +52,21 @@ public class Service {
         return stylistName;
     }
 
-    public  void setStylistName(String stylistName) {
+    public void setStylistName(String stylistName) {
         this.stylistName = stylistName;
     }
-
-    public static ArrayList<Employee> getStylistArrayList() {
-        return stylistArrayList;
-    }
-
 
     public String getName() {
         return name;
     }
 
-
-
-    public  double getCost() {
-        return cost ;
+    public double getCost() {
+        return cost;
     }
 
     public void setCost(double cost) {
         this.cost = cost;
     }
-
-    public static void  addStylist(Employee employee) {
-        stylistArrayList.add(employee);
-    }
-
 
 
 }
