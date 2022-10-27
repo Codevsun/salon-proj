@@ -1,7 +1,8 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Hair extends Service {
-    private final ArrayList<Service> services = new ArrayList<>();
+    private final ArrayList<String> services = new ArrayList<>();
 
     public Hair() {
     }
@@ -16,19 +17,20 @@ public class Hair extends Service {
         };
     }
 
-    public ArrayList<Service> getServices() {
+    public ArrayList<String> getServices() {
         return services;
     }
 
-    public void displayMenu() {
-        System.out.println("""
-                1.Blow dry
-                2.HairStyle
-                3.Retro
-                4.Haircut
-                5.Hair Dye
-                6.Treatment""");
+    public void print() {
+        String[] hairServiceNames = {"Blow dry", "Hairstyle", "Retro", "Haircut", "Hair dye", "Treatment"};
+        Collections.addAll(services, hairServiceNames);
+        int i = 0;
+        for (String s : services) {
+            System.out.println(i + 1 + ". " + s);
+            i++;
+        }
     }
+
 
     public double costForEachType(Length hairLength) {
         return switch (hairLength) {

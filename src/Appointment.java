@@ -3,17 +3,12 @@ import java.util.UUID;
 
 public class Appointment extends Customer {
     private final String id = UUID.randomUUID().toString();
-    private ArrayList<Service> serviceArrayList = new ArrayList<>();
+    private final ArrayList<Service> serviceArrayList = new ArrayList<>();
     private Customer customer;
 
     public Appointment() {
     }
 
-    public Appointment(ArrayList<Service> serviceArrayList, Customer customer) {
-        System.out.println("#".repeat(50));
-        this.serviceArrayList = serviceArrayList;
-        this.customer = customer;
-    }
 
     public String getId() {
         return id;
@@ -55,7 +50,4 @@ public class Appointment extends Customer {
     }
 
 
-    public void setServiceArrayList(ArrayList<Service> serviceArrayList) {
-        this.serviceArrayList = serviceArrayList;
-    }
 }

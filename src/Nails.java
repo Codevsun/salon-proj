@@ -1,21 +1,13 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Nails extends Service {
-    private ArrayList<Service> services = new ArrayList<Service>() ;
+    private final ArrayList<String> services = new ArrayList<>();
 
-    public Nails(ArrayList<Service> services) {
-        this.services = services;
+
+    public Nails() {
     }
 
-    public Nails() {}
-
-    public void displayMenu(){
-        System.out.println("""
-                1.Pedicure"\040
-                2.Manicure
-                3.Nail Art
-                4.Nails color""");
-    }
     public static double nailsServiceCost(int choice) {
         return switch (choice) {
             case 1 -> 70;
@@ -26,7 +18,19 @@ public class Nails extends Service {
         };
     }
 
-    public ArrayList<Service> getServices() {
+    public ArrayList<String> getServices() {
         return services;
     }
+
+    public void print() {
+        String[] nailsServiceNames = {"Pedicure", "Manicure", "Nails Art", "Hand Nails Color", "Foot Nails Color"};
+        Collections.addAll(services, nailsServiceNames);
+        int i = 0;
+        for (String s : services) {
+            System.out.println(i + 1 + ". " + s);
+            i++;
+        }
+    }
+
+
 }

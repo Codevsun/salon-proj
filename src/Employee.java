@@ -1,4 +1,4 @@
-public class Employee extends Salon {
+public class Employee extends User {
     private static int employeeIdCounter = 1000;
     public int employeeId;
 
@@ -29,7 +29,6 @@ public class Employee extends Salon {
                 System.out.println(appointment);
                 appointment.printServices();
             }
-
         }
     }
 

@@ -7,8 +7,6 @@ public class Main {
     public static void main(String[] args) {
         Service.init();
         Store.init();
-        String[] hairServiceNames = {"Blow dry", "Hairstyle", "Retro", "Haircut", "Hair dye", "Treatment"};
-        String[] nailsServiceNames = {"Pedicure", "Manicure", "Nails Art", "Hand Nails Color", "Foot Nails Color"};
 
         while (true) {
             System.out.println(prettyPrint("Welcome to FAB Beauty Salon"));
@@ -20,7 +18,7 @@ public class Main {
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1 -> employee();
-                case 2 -> customer(hairServiceNames, nailsServiceNames);
+                case 2 -> customer();
                 case 3 -> salonStore();
                 default -> System.out.println("Invalid Input!!");
             }
@@ -75,28 +73,26 @@ public class Main {
         }
     }
 
-    private static void customer(String[] hairServiceNames, String[] nailsServiceNames) {
-        Customer customer = null;
+    private static void customer() {
         System.out.println(prettyPrint("customer"));
         System.out.println("""
-                1. Book Appointment
-                2. Edit Appointment
-                3. Cancel Appointment
-                0. Go Back""");
+                Welcome to FAB Beauty
+                Press 1 to Setup your appointment
+                0 to go back.""");
         int customerChoice = scanner.nextInt();
 
-        switch (customerChoice) {
-            case 1 -> {
-                customer = bookCustomerAppointment(hairServiceNames, nailsServiceNames);
-            }
-            case 2 -> editCustomerAppointment(customer);
-            case 3 -> cancelCustomerAppointment(customer);
+        if (customerChoice == 1) {
+            bookCustomerAppointment();
+        } else if (customerChoice == 0) {
+        } else {
+            System.out.println("Wrong input!");
         }
+
     }
 
     private static void cancelCustomerAppointment(Customer customer) {
         if (customer == null || customer.getAppointment() == null) {
-            System.out.println("* You don't have an appointment yet.");
+            System.out.println("*You Have To Add Services First.");
             return;
         }
 
@@ -105,10 +101,11 @@ public class Main {
 
         if (yesNo.equalsIgnoreCase("y")) {
             customer.cancelAppointment();
+            System.out.println("*Your Appointment Cancelled Successfully");
         }
     }
 
-    private static Customer bookCustomerAppointment(String[] hairServiceNames, String[] nailsServiceNames) {
+    private static void bookCustomerAppointment() {
         Customer customer = new Customer();
         Appointment newAppointment = new Appointment();
         newAppointment.setCustomer(customer);
@@ -131,20 +128,20 @@ public class Main {
 
         loop:
         while (true) {
+            System.out.println(prettyPrint("Salon Services"));
             System.out.println("""
-                    1. to add your desired services
-                    2. to view your added services
-                    3. to edit your Appointment
-                    4. to cancel your Appointment
-                    Press 0 to Exit""");
+                    1. Add Services 
+                    2. View Bill
+                    3. Edit Appointment
+                    4. Cancel Appointment
+                       0 to Exit""");
             int servicesDesired = scanner.nextInt();
             switch (servicesDesired) {
-                case 1 ->
-                        newAppointment = addDesiredService(hairServiceNames, nailsServiceNames, newAppointment, customer);
+                case 1 -> newAppointment = addDesiredService(newAppointment, customer);
                 case 2 -> viewAddedServices(customer);
                 case 3 -> editCustomerAppointment(customer);
                 case 4 -> {
-                    customer.cancelAppointment();
+                    cancelCustomerAppointment(customer);
                     newAppointment = null;
                 }
                 case 0 -> {
@@ -154,12 +151,11 @@ public class Main {
             }
         }
 
-        return customer;
     }
 
     private static void editCustomerAppointment(Customer customer) {
         if (customer == null) {
-            System.out.println("* You don't have an appointment yet.");
+            System.out.println("*You Have To Add Services First");
             return;
         }
         String editAppointmentMessage = prettyPrint("Edit Appointment");
@@ -214,7 +210,7 @@ public class Main {
                     return;
                 }
             }
-            System.out.println("editChoice=" + editChoice);
+
             customer.editAppointment(editChoice, newName, newEmail, newPhoneNumber, newAddress);
             System.out.println(prettyPrintFooter(editAppointmentMessage.length()));
         }
@@ -222,7 +218,7 @@ public class Main {
 
     private static void viewAddedServices(Customer customer) {
         if (customer.getAppointment() == null) {
-            System.out.println("You don't have any appointments yet");
+            System.out.println("*You Have To Add Services First");
             return;
         }
         String header = prettyPrint("Added services");
@@ -232,7 +228,7 @@ public class Main {
         System.out.println(prettyPrintFooter(header.length()));
     }
 
-    private static Appointment addDesiredService(String[] hairServiceNames, String[] nailsServiceNames, Appointment newAppointment, Customer customer) {
+    private static Appointment addDesiredService(Appointment newAppointment, Customer customer) {
         if (newAppointment == null) {
             newAppointment = new Appointment();
             newAppointment.setCustomer(customer);
@@ -243,7 +239,7 @@ public class Main {
         switch (customerService) {
             case 1 -> {
                 Hair hair = new Hair();
-                hair.displayMenu();
+                hair.print();
                 System.out.println("Choose your service: ");
                 int customerHairChoice = scanner.nextInt();
                 System.out.println("Choose your hair stylists");
@@ -254,19 +250,19 @@ public class Main {
                 customersHairLength = customersHairLength.toUpperCase();
                 hair.setCost(Hair.hairServicesCost(customerHairChoice));
                 hair.setCost(hair.costForEachType(Hair.Length.valueOf(customersHairLength)));
-                Service service = new Service(hairServiceNames[customerHairChoice - 1], hair.getCost(), Service.getStylistById(stylistChoice));
+                Service service = new Service(hair.getServices().get(customerHairChoice - 1), hair.getCost(), Service.getStylistById(stylistChoice));
                 newAppointment.getServicesArrayList().add(service);
             }
 
             case 2 -> {
                 Nails nails = new Nails();
-                nails.displayMenu();
+                nails.print();
                 System.out.println("Choose your service");
                 int customerNailsChoice = scanner.nextInt();
                 System.out.println("Choose your Nails stylists");
                 Service.availableStylists();
                 int stylistChoice = scanner.nextInt();
-                Service service = new Service(nailsServiceNames[customerNailsChoice - 1], Nails.nailsServiceCost(customerNailsChoice), Service.getStylistById(stylistChoice));
+                Service service = new Service(nails.getServices().get(customerNailsChoice - 1), Nails.nailsServiceCost(customerNailsChoice), Service.getStylistById(stylistChoice));
                 newAppointment.getServicesArrayList().add(service);
             }
 
@@ -389,7 +385,6 @@ public class Main {
             System.out.println("Product should be unavailable now.");
             return false;
         }
-        System.out.println("tf is this");
         return false;
     }
 

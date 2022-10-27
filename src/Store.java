@@ -54,7 +54,7 @@ public class Store {
             if (productName2.equals(product.getProductName())) {
                 product.setAvailable(availableOrNot);
 
-            } // employee can edit this
+            }
         });
     }
 

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Customer extends Salon {
+public class Customer extends User {
 
     private static final ArrayList<Appointment> appointments = new ArrayList<>();
 
@@ -35,9 +35,7 @@ public class Customer extends Salon {
 
     public void editAppointment(int choice, String name, String email, String phoneNumber, String address) {
         for (Appointment appointment : appointments) {
-            System.out.println(appointment.getCustomer().equals(this));
             if (appointment.getCustomer().equals(this)) {
-                System.out.println("editAppointment got choice set to " + choice);
                 switch (choice) {
                     case 1 -> {
                         if (name.isBlank()) {
