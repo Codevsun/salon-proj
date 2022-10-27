@@ -15,6 +15,10 @@ public class Service {
     public Service() {
     }
 
+    public Service(String hairServiceName) {
+
+    }
+
     public static void init() {
         stylistArrayList.add(new Employee("Sali", "Sali@gmail.com", "0555807637", "Dammam"));
         stylistArrayList.add(new Employee("Sara", "Sara@gmail.com", "0553544047", "Dammam"));

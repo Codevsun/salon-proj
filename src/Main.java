@@ -7,8 +7,6 @@ public class Main {
     public static void main(String[] args) {
         Service.init();
         Store.init();
-        String[] hairServiceNames = {"Blow dry", "Hairstyle", "Retro", "Haircut", "Hair dye", "Treatment"};
-        String[] nailsServiceNames = {"Pedicure", "Manicure", "Nails Art", "Hand Nails Color", "Foot Nails Color"};
 
         while (true) {
             System.out.println(prettyPrint("Welcome to FAB Beauty Salon"));
@@ -20,7 +18,7 @@ public class Main {
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1 -> employee();
-                case 2 -> customer(hairServiceNames, nailsServiceNames);
+                case 2 -> customer();
                 case 3 -> salonStore();
                 default -> System.out.println("Invalid Input!!");
             }
@@ -75,7 +73,7 @@ public class Main {
         }
     }
 
-    private static void customer(String[] hairServiceNames, String[] nailsServiceNames) {
+    private static void customer() {
         Customer customer = null;
         System.out.println(prettyPrint("customer"));
         System.out.println("""
@@ -87,7 +85,7 @@ public class Main {
 
         switch (customerChoice) {
             case 1 -> {
-                customer = bookCustomerAppointment(hairServiceNames, nailsServiceNames);
+                customer = bookCustomerAppointment();
             }
             case 2 -> editCustomerAppointment(customer);
             case 3 -> cancelCustomerAppointment(customer);
@@ -108,7 +106,7 @@ public class Main {
         }
     }
 
-    private static Customer bookCustomerAppointment(String[] hairServiceNames, String[] nailsServiceNames) {
+    private static Customer bookCustomerAppointment() {
         Customer customer = new Customer();
         Appointment newAppointment = new Appointment();
         newAppointment.setCustomer(customer);
@@ -139,8 +137,7 @@ public class Main {
                     Press 0 to Exit""");
             int servicesDesired = scanner.nextInt();
             switch (servicesDesired) {
-                case 1 ->
-                        newAppointment = addDesiredService(hairServiceNames, nailsServiceNames, newAppointment, customer);
+                case 1 -> newAppointment = addDesiredService(newAppointment, customer);
                 case 2 -> viewAddedServices(customer);
                 case 3 -> editCustomerAppointment(customer);
                 case 4 -> {
@@ -232,7 +229,7 @@ public class Main {
         System.out.println(prettyPrintFooter(header.length()));
     }
 
-    private static Appointment addDesiredService(String[] hairServiceNames, String[] nailsServiceNames, Appointment newAppointment, Customer customer) {
+    private static Appointment addDesiredService(Appointment newAppointment, Customer customer) {
         if (newAppointment == null) {
             newAppointment = new Appointment();
             newAppointment.setCustomer(customer);
@@ -243,7 +240,7 @@ public class Main {
         switch (customerService) {
             case 1 -> {
                 Hair hair = new Hair();
-                hair.displayMenu();
+                hair.print();
                 System.out.println("Choose your service: ");
                 int customerHairChoice = scanner.nextInt();
                 System.out.println("Choose your hair stylists");
@@ -254,19 +251,19 @@ public class Main {
                 customersHairLength = customersHairLength.toUpperCase();
                 hair.setCost(Hair.hairServicesCost(customerHairChoice));
                 hair.setCost(hair.costForEachType(Hair.Length.valueOf(customersHairLength)));
-                Service service = new Service(hairServiceNames[customerHairChoice - 1], hair.getCost(), Service.getStylistById(stylistChoice));
+                Service service = new Service(hair.getServices().get(customerHairChoice - 1), hair.getCost(), Service.getStylistById(stylistChoice));
                 newAppointment.getServicesArrayList().add(service);
             }
 
             case 2 -> {
                 Nails nails = new Nails();
-                nails.displayMenu();
+                nails.print();
                 System.out.println("Choose your service");
                 int customerNailsChoice = scanner.nextInt();
                 System.out.println("Choose your Nails stylists");
                 Service.availableStylists();
                 int stylistChoice = scanner.nextInt();
-                Service service = new Service(nailsServiceNames[customerNailsChoice - 1], Nails.nailsServiceCost(customerNailsChoice), Service.getStylistById(stylistChoice));
+                Service service = new Service(nails.getServices().get(customerNailsChoice - 1), Nails.nailsServiceCost(customerNailsChoice), Service.getStylistById(stylistChoice));
                 newAppointment.getServicesArrayList().add(service);
             }
 
@@ -389,7 +386,6 @@ public class Main {
             System.out.println("Product should be unavailable now.");
             return false;
         }
-        System.out.println("tf is this");
         return false;
     }
 
