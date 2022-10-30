@@ -130,7 +130,7 @@ public class Main {
         while (true) {
             System.out.println(prettyPrint("Salon Services"));
             System.out.println("""
-                    1. Add Services 
+                    1. Add Services
                     2. View Bill
                     3. Edit Appointment
                     4. Cancel Appointment
@@ -368,7 +368,7 @@ public class Main {
     private static String phoneValidity(Scanner scanner) {
         String phoneNumber;
         do {
-            System.out.println("Please enter your phoneNumber :");
+            System.out.println("Please enter your phone number :");
             phoneNumber = scanner.next();
             if (Main.isInvalidMobileNumber(phoneNumber)) {
                 System.out.println("Invalid number");
