@@ -36,7 +36,7 @@ public class Appointment extends Customer {
     public String toString() {
         return "Name: " + this.customer.getName() +
                 "\nEmail: " + this.customer.getEmail() +
-                "\nPhoneNumber: " + this.customer.getPhone() +
+                "\nPhone Number: " + this.customer.getPhone() +
                 "\nAddress: " + this.customer.getAddress() +
                 "\nCustomer ID: " + getCustomerId();
     }

@@ -21,10 +21,13 @@ public class Hair extends Service {
         return services;
     }
 
-    public void print() {
+    public void print(String title) {
         String[] hairServiceNames = {"Blow dry", "Hairstyle", "Retro", "Haircut", "Hair dye", "Treatment"};
         Collections.addAll(services, hairServiceNames);
         int i = 0;
+        System.out.println("------------------------------------------------------------------------------------"
+                + title +
+                "------------------------------------------------------------------------------------");
         for (String s : services) {
             System.out.println(i + 1 + ". " + s);
             i++;

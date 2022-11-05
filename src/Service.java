@@ -15,9 +15,6 @@ public class Service {
     public Service() {
     }
 
-    public Service(String hairServiceName) {
-
-    }
 
     public static void init() {
         stylistArrayList.add(new Employee("Sali", "Sali@gmail.com", "0555807637", "Dammam"));
@@ -45,6 +42,9 @@ public class Service {
 
     public static void addStylist(Employee employee) {
         stylistArrayList.add(employee);
+    }
+
+    public void print(String hair_services) {
     }
 
     @Override

@@ -22,11 +22,15 @@ public class Nails extends Service {
         return services;
     }
 
-    public void print() {
+    public void print(String nail_title) {
         String[] nailsServiceNames = {"Pedicure", "Manicure", "Nails Art", "Hand Nails Color", "Foot Nails Color"};
         Collections.addAll(services, nailsServiceNames);
         int i = 0;
+        System.out.println("------------------------------------------------------------------------------------"
+                + nail_title +
+                "------------------------------------------------------------------------------------");
         for (String s : services) {
+
             System.out.println(i + 1 + ". " + s);
             i++;
         }

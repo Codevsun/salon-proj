@@ -28,6 +28,7 @@ public class Employee extends User {
             if (appointment.getCustomer().getPhone().equals(number)) {
                 System.out.println(appointment);
                 appointment.printServices();
+                break;
             }
         }
     }

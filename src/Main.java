@@ -92,7 +92,7 @@ public class Main {
 
     private static void cancelCustomerAppointment(Customer customer) {
         if (customer == null || customer.getAppointment() == null) {
-            System.out.println("*You Have To Add Services First.");
+            System.out.println("*You Don't Have Any Appointment Yet. ");
             return;
         }
 
@@ -101,7 +101,7 @@ public class Main {
 
         if (yesNo.equalsIgnoreCase("y")) {
             customer.cancelAppointment();
-            System.out.println("*Your Appointment Cancelled Successfully");
+            System.out.println("*Your Appointment is Cancelled Successfully");
         }
     }
 
@@ -155,7 +155,7 @@ public class Main {
 
     private static void editCustomerAppointment(Customer customer) {
         if (customer == null) {
-            System.out.println("*You Have To Add Services First");
+            System.out.println("*You Have to Add Services First");
             return;
         }
         String editAppointmentMessage = prettyPrint("Edit Appointment");
@@ -229,6 +229,7 @@ public class Main {
     }
 
     private static Appointment addDesiredService(Appointment newAppointment, Customer customer) {
+
         if (newAppointment == null) {
             newAppointment = new Appointment();
             newAppointment.setCustomer(customer);
@@ -236,10 +237,11 @@ public class Main {
 
         System.out.println("What would you like to to do today\n1. Hair \n2. Nails");
         int customerService = scanner.nextInt();
+
         switch (customerService) {
             case 1 -> {
                 Hair hair = new Hair();
-                hair.print();
+                hair.print("Hair Services");
                 System.out.println("Choose your service: ");
                 int customerHairChoice = scanner.nextInt();
                 System.out.println("Choose your hair stylists");
@@ -256,7 +258,7 @@ public class Main {
 
             case 2 -> {
                 Nails nails = new Nails();
-                nails.print();
+                nails.print("nails Services");
                 System.out.println("Choose your service");
                 int customerNailsChoice = scanner.nextInt();
                 System.out.println("Choose your Nails stylists");
@@ -274,6 +276,7 @@ public class Main {
     }
 
     private static void employee() {
+        System.out.println(prettyPrint("Employees System"));
         System.out.println("""
                 FAB Salon System Please choose a Service :
                 1. Display Today's Appointments
@@ -282,7 +285,8 @@ public class Main {
                 4. Display Customer's Bill
                 5. Offer A discount
                 6. Add a New product to the Store
-                7. Set an Out of stock Products""");
+                7. Set an Out of stock Products
+                0. to go back """);
         int employeeChoice = scanner.nextInt();
         ArrayList<Employee> employeesArray = new ArrayList<>();
 
@@ -312,8 +316,9 @@ public class Main {
 
             case 6 -> {
                 System.out.println(prettyPrint("Adding product"));
+                scanner.nextLine();
                 System.out.println("Product's Name: ");
-                String newProductName = scanner.next();
+                String newProductName = scanner.nextLine();
                 System.out.println("How much does it Cost: ");
                 double newProductPrice = scanner.nextDouble();
                 System.out.println("Set Product Availability:[t/f] ");
@@ -377,6 +382,17 @@ public class Main {
         return phoneNumber;
     }
 
+    public static boolean isInvalidMobileNumber(String phone) {
+        //phone doesnt contain special characters if its a saudi no.
+        return (phone.length() <= 10 ||
+                ((!phone.contains("+1" + "((\\\\d{3}-)){1,2}\\\\d{4}"))
+                        && (!phone.contains("+966" + "d{9}"))))
+                && ((phone.length() != 10) ||
+                phone.contains("(") && !(phone.contains(")") &&
+                        !(phone.contains("-"))));
+
+    }
+
     public static boolean isTrue(char truefalse) {
         if (truefalse == 't') {
             System.out.println("Product should be available now!");
@@ -388,16 +404,6 @@ public class Main {
         return false;
     }
 
-    public static boolean isInvalidMobileNumber(String phone) {
-        //phone doesnt contain special characters if its a saudi no.
-        return (phone.length() <= 10 ||
-                ((!phone.contains("+1" + "((\\\\d{3}-)){1,2}\\\\d{4}"))
-                        && (!phone.contains("+966" + "d{9}"))))
-                && ((phone.length() != 10) ||
-                phone.contains("(") && !(phone.contains(")") &&
-                        !(phone.contains("-"))));
-
-    }
 
     public static String prettyPrint(String header) {
         String repeat = "=".repeat(25);

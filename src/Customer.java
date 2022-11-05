@@ -32,6 +32,7 @@ public class Customer extends User {
         }
         return null;
     }
+    
 
     public void editAppointment(int choice, String name, String email, String phoneNumber, String address) {
         for (Appointment appointment : appointments) {
